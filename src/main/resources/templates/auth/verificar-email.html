@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-MZ" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verificação de email — SGHR</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/style.css}" href="../../static/css/style.css">
+</head>
+<body class="bg-sand">
+
+<div class="auth-shell align-items-center justify-content-center py-5" style="min-height:100vh;">
+  <div class="auth-card text-center">
+
+    <a class="d-inline-flex align-items-center gap-2 mb-4 navbar-brand justify-content-center" th:href="@{/}" href="../home.html">
+      <span class="brand-mark" style="background:linear-gradient(155deg, var(--sghr-ocean-700), var(--sghr-ocean-950)); color: var(--sghr-gold-300);"><i class="bi bi-water"></i></span> SGHR
+    </a>
+
+    <!-- Estado de sucesso: th:if="${sucesso}" -->
+    <div th:if="${sucesso}">
+      <div class="auth-icon-circle is-success mx-auto mb-3">
+        <i class="bi bi-check-lg"></i>
+      </div>
+      <h1 class="font-display h2 mb-2">Conta confirmada!</h1>
+      <p class="text-muted mb-4">
+        O seu email <strong th:text="${email}">ana.cossa@exemplo.com</strong> foi verificado com sucesso.
+        Já pode iniciar sessão e aproveitar todas as funcionalidades da plataforma.
+      </p>
+      <a th:href="@{/login}" href="../login.html" class="btn btn-ocean w-100">
+        <i class="bi bi-box-arrow-in-right me-1"></i> Iniciar sessão
+      </a>
+    </div>
+
+    <!-- Estado de erro (link inválido/expirado): th:unless="${sucesso}" -->
+    <div th:unless="${sucesso}">
+      <div class="auth-icon-circle is-danger mx-auto mb-3">
+        <i class="bi bi-x-lg"></i>
+      </div>
+      <h1 class="font-display h2 mb-2">Não foi possível verificar</h1>
+      <p class="text-muted mb-4">
+        <span th:text="${erro}">Este link de verificação é inválido ou já expirou.</span>
+        Pode solicitar um novo email de confirmação abaixo.
+      </p>
+      <a th:href="@{/auth/reenviar-verificacao}" href="reenviar-verificacao.html" class="btn btn-ocean w-100 mb-3">
+        <i class="bi bi-arrow-repeat me-1"></i> Reenviar email de verificação
+      </a>
+      <a th:href="@{/login}" href="../login.html" class="small">
+        <i class="bi bi-arrow-left"></i> Voltar ao início de sessão
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

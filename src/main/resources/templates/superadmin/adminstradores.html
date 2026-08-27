@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt-MZ" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administradores — SGHR</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/style.css}" href="../../static/css/style.css">
+</head>
+<body class="bg-sand">
+
+<div class="admin-shell">
+
+  <!-- ========================== SIDEBAR ========================== -->
+  <aside class="admin-sidebar" id="adminSidebar">
+    <a class="sidebar-brand" th:href="@{/superadmin/dashboard}" href="dashboard.html">
+      <span class="brand-mark"><i class="bi bi-water"></i></span> SGHR
+    </a>
+
+    <p class="sidebar-eyebrow">Plataforma</p>
+    <nav class="nav flex-column">
+      <a class="nav-link" th:href="@{/superadmin/dashboard}" href="dashboard.html"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+      <a class="nav-link active" th:href="@{/superadmin/adminstradores}" href="adminstradores.html"><i class="bi bi-person-badge"></i> Administradores</a>
+      <a class="nav-link" th:href="@{/superadmin/usuarios}" href="usuarios.html"><i class="bi bi-people"></i> Utilizadores</a>
+      <a class="nav-link" th:href="@{/superadmin/hoteis}" href="#"><i class="bi bi-building"></i> Hotéis &amp; Resorts</a>
+      <a class="nav-link" th:href="@{/superadmin/avaliacoes}" href="#"><i class="bi bi-star"></i> Avaliações</a>
+      <a class="nav-link" th:href="@{/superadmin/relatorios}" href="#"><i class="bi bi-bar-chart"></i> Relatórios</a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a class="nav-link" th:href="@{/perfil}" href="#"><i class="bi bi-gear"></i> Configurações</a>
+      <a class="nav-link" th:href="@{/logout}" href="../login.html"><i class="bi bi-box-arrow-right"></i> Sair</a>
+    </div>
+  </aside>
+
+  <!-- =========================== MAIN ============================ -->
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-sm btn-outline-secondary d-lg-none" id="btnToggleSidebar" aria-label="Abrir menu">
+          <i class="bi bi-list"></i>
+        </button>
+        <div>
+          <h1>Administradores</h1>
+          <div class="topbar-subtitle">Contas de Hotel SuperAdmin e Hotel Admin (RF05 / RF06)</div>
+        </div>
+      </div>
+      <button class="btn btn-gold btn-sm" data-bs-toggle="modal" data-bs-target="#modalNovoAdmin">
+        <i class="bi bi-plus-lg me-1"></i> Novo Hotel SuperAdmin
+      </button>
+    </header>
+
+    <main class="admin-content">
+
+      <!-- ============================ FILTROS ============================ -->
+      <form class="filter-bar row g-2 align-items-center mb-4" th:action="@{/superadmin/adminstradores}" action="#" method="get">
+        <div class="col-md-4">
+          <div class="search-input-icon">
+            <i class="bi bi-search"></i>
+            <input type="text" class="form-control" name="pesquisa" placeholder="Pesquisar por nome, email ou hotel">
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <select class="form-select" name="perfil">
+            <option value="" selected>Todos os perfis</option>
+            <option value="HOTEL_SUPERADMIN">Hotel SuperAdmin</option>
+            <option value="HOTEL_ADMIN">Hotel Admin</option>
+          </select>
+        </div>
+        <div class="col-md-3 col-6">
+          <select class="form-select" name="estado">
+            <option value="" selected>Todos os estados</option>
+            <option value="ATIVO">Ativo</option>
+            <option value="BLOQUEADO">Bloqueado</option>
+            <option value="PENDENTE_VERIFICACAO">Convite pendente</option>
+          </select>
+        </div>
+        <div class="col-md-2 d-grid">
+          <button type="submit" class="btn btn-outline-ocean"><i class="bi bi-funnel me-1"></i>Filtrar</button>
+        </div>
+      </form>
+
+      <!-- ============================ TABELA ============================ -->
+      <div class="card-sghr">
+        <div class="card-header-sghr">
+          <h2>Contas de administração hoteleira</h2>
+          <span class="small text-muted" th:text="${totalRegistos} + ' resultados'">128 resultados</span>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-sghr mb-0">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Hotel associado</th>
+                <th>Perfil</th>
+                <th>Estado</th>
+                <th>Criado em</th>
+                <th class="text-end">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- th:each="admin : ${administradores}" -->
+              <tr>
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="avatar-chip">LM</span>
+                    <div>
+                      <div class="fw-semibold" th:text="${admin.nome}">Luísa Macuácua</div>
+                      <div class="text-muted" style="font-size:.78rem;" th:text="${admin.email}">luisa.macuacua@baiadourada.co.mz</div>
+                    </div>
+                  </div>
+                </td>
+                <td th:text="${admin.hotelNome}">Resort Baía Dourada</td>
+                <td><span class="badge-role">Hotel SuperAdmin</span></td>
+                <td><span class="badge-status status-ativo">Ativo</span></td>
+                <td th:text="${admin.dataCriacao}">03 Jan 2026</td>
+                <td class="text-end">
+                  <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="bi bi-three-dots"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>Ver detalhes</a></li>
+                      <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-lock me-2"></i>Bloquear conta</a></li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="avatar-chip">JC</span>
+                    <div>
+                      <div class="fw-semibold">João Chissano</div>
+                      <div class="text-muted" style="font-size:.78rem;">joao.chissano@marisolmaputo.co.mz</div>
+                    </div>
+                  </div>
+                </td>
+                <td>Hotel Marisol Maputo</td>
+                <td><span class="badge-role">Hotel Admin</span></td>
+                <td><span class="badge-status status-ativo">Ativo</span></td>
+                <td>14 Fev 2026</td>
+                <td class="text-end">
+                  <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="bi bi-three-dots"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>Ver detalhes</a></li>
+                      <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-lock me-2"></i>Bloquear conta</a></li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="avatar-chip">AT</span>
+                    <div>
+                      <div class="fw-semibold">Amina Taibo</div>
+                      <div class="text-muted" style="font-size:.78rem;">amina.taibo@bazarutolodge.co.mz</div>
+                    </div>
+                  </div>
+                </td>
+                <td>Bazaruto Ocean Lodge</td>
+                <td><span class="badge-role">Hotel SuperAdmin</span></td>
+                <td><span class="badge-status status-pendente">Convite pendente</span></td>
+                <td>25 Ago 2026</td>
+                <td class="text-end">
+                  <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="bi bi-three-dots"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li><a class="dropdown-item" href="#"><i class="bi bi-send me-2"></i>Reenviar convite</a></li>
+                      <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-x-circle me-2"></i>Cancelar convite</a></li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="avatar-chip">PS</span>
+                    <div>
+                      <div class="fw-semibold">Pedro Sitoe</div>
+                      <div class="text-muted" style="font-size:.78rem;">pedro.sitoe@savanacentral.co.mz</div>
+                    </div>
+                  </div>
+                </td>
+                <td>Hotel Savana Central</td>
+                <td><span class="badge-role">Hotel Admin</span></td>
+                <td><span class="badge-status status-bloqueado">Bloqueado</span></td>
+                <td>02 Nov 2025</td>
+                <td class="text-end">
+                  <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="bi bi-three-dots"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>Ver detalhes</a></li>
+                      <li><a class="dropdown-item" href="#"><i class="bi bi-unlock me-2"></i>Desbloquear conta</a></li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+              <!-- /th:each -->
+            </tbody>
+          </table>
+        </div>
+        <div class="d-flex justify-content-between align-items-center p-3 border-top" style="border-color:#f0e9d9 !important;">
+          <span class="text-muted small">A mostrar 1–4 de 128</span>
+          <nav aria-label="Paginação de administradores">
+            <ul class="pagination pagination-sm mb-0">
+              <li class="page-item disabled"><a class="page-link" href="#">Anterior</a></li>
+              <li class="page-item active"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">Seguinte</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ===================== MODAL: NOVO HOTEL SUPERADMIN ===================== -->
+<div class="modal fade" id="modalNovoAdmin" tabindex="-1" aria-labelledby="modalNovoAdminLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius: var(--sghr-radius-md); border:none;">
+      <form th:action="@{/superadmin/adminstradores}" action="#" method="post">
+        <div class="modal-header" style="border-color:#f0e9d9;">
+          <h5 class="modal-title font-display" id="modalNovoAdminLabel">Criar Hotel SuperAdmin</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          <p class="text-muted small">O convite é enviado por email com um link de validade limitada para o novo utilizador definir a sua própria palavra-passe (RN23).</p>
+          <div class="mb-3">
+            <label for="novoAdminHotel" class="form-label">Hotel</label>
+            <select class="form-select" id="novoAdminHotel" name="hotelId" required>
+              <option value="" selected disabled>Selecionar hotel cadastrado…</option>
+              <option value="1">Resort Baía Dourada</option>
+              <option value="2">Hotel Marisol Maputo</option>
+              <option value="3">Bazaruto Ocean Lodge</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="novoAdminNome" class="form-label">Nome completo</label>
+            <input type="text" class="form-control" id="novoAdminNome" name="nome" required>
+          </div>
+          <div class="mb-1">
+            <label for="novoAdminEmail" class="form-label">Email</label>
+            <input type="email" class="form-control" id="novoAdminEmail" name="email" required>
+          </div>
+        </div>
+        <div class="modal-footer" style="border-color:#f0e9d9;">
+          <button type="button" class="btn btn-outline-ocean" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-ocean"><i class="bi bi-send me-1"></i> Enviar convite</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const btnToggle = document.getElementById('btnToggleSidebar');
+  const sidebar = document.getElementById('adminSidebar');
+  if (btnToggle && sidebar) {
+    btnToggle.addEventListener('click', () => sidebar.classList.toggle('is-open'));
+  }
+</script>
+</body>
+</html>

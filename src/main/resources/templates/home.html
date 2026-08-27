@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-MZ" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SGHR — Encontre hotéis e resorts perto de si</title>
+  <meta name="description" content="Pesquise, compare e reserve hotéis e resorts com o Sistema de Gestão de Hotelaria e Resorts (SGHR).">
+
+  <!-- Bootstrap 5 (CDN) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <!-- Bootstrap Icons (CDN) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <!-- Google Fonts (CDN) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- CSS próprio -->
+  <link rel="stylesheet" th:href="@{/css/style.css}" href="../static/css/style.css">
+</head>
+<body>
+
+<!-- ============================= NAVBAR ============================= -->
+<nav class="navbar navbar-expand-lg navbar-sghr sticky-top">
+  <div class="container">
+    <a class="navbar-brand" th:href="@{/}" href="#">
+      <span class="brand-mark"><i class="bi bi-water"></i></span>
+      SGHR
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain" aria-controls="navMain" aria-expanded="false" aria-label="Alternar navegação">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMain">
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item"><a class="nav-link active" th:href="@{/}" href="#">Início</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/hoteis}" href="#">Hotéis &amp; Resorts</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/#como-funciona}" href="#como-funciona">Como funciona</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/#contacto}" href="#contacto">Contacto</a></li>
+      </ul>
+      <div class="d-flex gap-2 mt-3 mt-lg-0">
+        <a class="btn btn-outline-ocean btn-sm" th:href="@{/login}" href="login.html">Entrar</a>
+        <a class="btn btn-gold btn-sm" th:href="@{/registro}" href="registro.html">Criar conta</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================== HERO =============================== -->
+<header class="hero-sghr">
+  <div class="container position-relative" style="z-index: 2;">
+    <div class="row">
+      <div class="col-lg-8">
+        <p class="eyebrow" style="color: var(--sghr-gold-300);">Hotelaria &amp; resorts em Moçambique</p>
+        <h1 class="font-display mb-3">Encontre o seu próximo alojamento perto de si</h1>
+        <p class="lead">Compare quartos, preços e disponibilidade em hotéis e resorts verificados — do litoral à cidade — e reserve em poucos minutos.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Divisor de onda (elemento de assinatura) -->
+  <div class="hero-wave">
+    <svg viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#fbf6ec" d="M0,64 C240,10 480,10 720,40 C960,70 1200,70 1440,32 L1440,90 L0,90 Z"></path>
+    </svg>
+  </div>
+</header>
+
+<!-- ==================== CARTÃO DE PESQUISA (flutuante) ================= -->
+<div class="container">
+  <form class="search-card row g-3 align-items-end" th:action="@{/hoteis}" action="hoteis.html" method="get">
+    <div class="col-md-4">
+      <label for="destino" class="form-label">Destino</label>
+      <div class="search-input-icon">
+        <i class="bi bi-geo-alt"></i>
+        <input type="text" class="form-control" id="destino" name="destino" placeholder="Cidade, província ou hotel">
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <label for="checkin" class="form-label">Entrada</label>
+      <input type="date" class="form-control" id="checkin" name="checkin">
+    </div>
+    <div class="col-md-3 col-6">
+      <label for="checkout" class="form-label">Saída</label>
+      <input type="date" class="form-control" id="checkout" name="checkout">
+    </div>
+    <div class="col-md-2 d-grid">
+      <button type="submit" class="btn btn-ocean">
+        <i class="bi bi-search me-1"></i> Pesquisar
+      </button>
+    </div>
+    <div class="col-12">
+      <button type="button" class="btn btn-link btn-link-quiet p-0" id="btnLocalizacao">
+        <i class="bi bi-crosshair"></i> Usar a minha localização atual
+      </button>
+    </div>
+  </form>
+</div>
+
+<!-- ======================= HOTÉIS EM DESTAQUE ========================= -->
+<section class="section-pad">
+  <div class="container">
+    <div class="d-flex flex-wrap justify-content-between align-items-end mb-4 gap-3">
+      <div>
+        <p class="eyebrow">Selecionados para si</p>
+        <h2 class="font-display mb-0">Hotéis e resorts em destaque</h2>
+      </div>
+      <a th:href="@{/hoteis}" href="hoteis.html" class="btn btn-outline-ocean btn-sm">Ver todos os hotéis</a>
+    </div>
+
+    <div class="row g-4">
+
+      <!-- th:each="hotel : ${hoteisDestaque}" — os 3 cartões abaixo ilustram os dados esperados por cartão -->
+      <div class="col-md-6 col-lg-4">
+        <div class="hotel-card">
+          <div class="hotel-thumb" style="background-image:url('https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&w=600&q=80');">
+            <span class="hotel-badge"><i class="bi bi-patch-check-fill"></i> Ativo</span>
+          </div>
+          <div class="p-3">
+            <div class="d-flex justify-content-between align-items-start">
+              <h3 class="h6 mb-1" th:text="${hotel.nome}">Resort Baía Dourada</h3>
+              <span class="hotel-rating"><i class="bi bi-star-fill text-warning"></i> <span th:text="${hotel.avaliacaoMedia}">4.8</span></span>
+            </div>
+            <p class="text-ink-500 small mb-2" style="color: var(--sghr-ink-500);">
+              <i class="bi bi-geo-alt"></i> <span th:text="${hotel.localizacao}">Vilankulo, Inhambane</span> · <span th:text="${hotel.distanciaKm} + ' km'">3,2 km</span>
+            </p>
+            <div class="d-flex flex-wrap gap-1 mb-3">
+              <span class="badge-role"><i class="bi bi-wifi"></i> Wi-Fi</span>
+              <span class="badge-role"><i class="bi bi-water"></i> Piscina</span>
+              <span class="badge-role"><i class="bi bi-cup-hot"></i> Restaurante</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <span class="hotel-price" th:text="${hotel.precoBase} + ' MT'">4 200 MT</span>
+                <span class="text-muted small">/ noite</span>
+              </div>
+              <a href="#" th:href="@{/hoteis/{id}(id=${hotel.id})}" class="btn btn-ocean btn-sm">Ver quartos</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="hotel-card">
+          <div class="hotel-thumb" style="background-image:url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=80');">
+            <span class="hotel-badge"><i class="bi bi-patch-check-fill"></i> Ativo</span>
+          </div>
+          <div class="p-3">
+            <div class="d-flex justify-content-between align-items-start">
+              <h3 class="h6 mb-1">Hotel Marisol Maputo</h3>
+              <span class="hotel-rating"><i class="bi bi-star-fill text-warning"></i> 4.6</span>
+            </div>
+            <p class="small mb-2" style="color: var(--sghr-ink-500);">
+              <i class="bi bi-geo-alt"></i> Maputo, Sommerschield · 1,1 km
+            </p>
+            <div class="d-flex flex-wrap gap-1 mb-3">
+              <span class="badge-role"><i class="bi bi-p-circle"></i> Estacionamento</span>
+              <span class="badge-role"><i class="bi bi-cup-hot"></i> Bar</span>
+              <span class="badge-role"><i class="bi bi-bag-check"></i> Lavandaria</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <span class="hotel-price">3 100 MT</span>
+                <span class="text-muted small">/ noite</span>
+              </div>
+              <a href="#" class="btn btn-ocean btn-sm">Ver quartos</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="hotel-card">
+          <div class="hotel-thumb" style="background-image:url('https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=600&q=80');">
+            <span class="hotel-badge"><i class="bi bi-patch-check-fill"></i> Ativo</span>
+          </div>
+          <div class="p-3">
+            <div class="d-flex justify-content-between align-items-start">
+              <h3 class="h6 mb-1">Bazaruto Ocean Lodge</h3>
+              <span class="hotel-rating"><i class="bi bi-star-fill text-warning"></i> 4.9</span>
+            </div>
+            <p class="small mb-2" style="color: var(--sghr-ink-500);">
+              <i class="bi bi-geo-alt"></i> Arquipélago do Bazaruto · 12 km
+            </p>
+            <div class="d-flex flex-wrap gap-1 mb-3">
+              <span class="badge-role"><i class="bi bi-water"></i> Piscina</span>
+              <span class="badge-role"><i class="bi bi-airplane"></i> Transporte</span>
+              <span class="badge-role"><i class="bi bi-flower1"></i> Spa</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <span class="hotel-price">7 800 MT</span>
+                <span class="text-muted small">/ noite</span>
+              </div>
+              <a href="#" class="btn btn-ocean btn-sm">Ver quartos</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /th:each -->
+
+    </div>
+  </div>
+</section>
+
+<!-- ========================= COMO FUNCIONA ============================ -->
+<section class="section-pad bg-ocean-100" id="como-funciona">
+  <div class="container">
+    <p class="eyebrow">Do primeiro clique ao check-in</p>
+    <h2 class="font-display mb-5">Como funciona a reserva no SGHR</h2>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="d-flex gap-3">
+          <span class="step-marker">1</span>
+          <div>
+            <h3 class="h6">Pesquise e compare</h3>
+            <p class="text-muted mb-0">Localize hotéis próximos ou pesquise por cidade, filtrando por preço, categoria e serviços disponíveis.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="d-flex gap-3">
+          <span class="step-marker">2</span>
+          <div>
+            <h3 class="h6">Escolha o quarto e reserve</h3>
+            <p class="text-muted mb-0">Consulte disponibilidade em tempo real, veja o preço final e confirme a sua reserva em poucos passos.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="d-flex gap-3">
+          <span class="step-marker">3</span>
+          <div>
+            <h3 class="h6">Acompanhe e avalie</h3>
+            <p class="text-muted mb-0">Consulte o histórico das suas reservas e, após a estadia, avalie o estabelecimento para ajudar outros viajantes.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= RODAPÉ =============================== -->
+<footer class="footer-sghr" id="contacto">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <a class="navbar-brand text-white mb-3 d-inline-flex" th:href="@{/}" href="#">
+          <span class="brand-mark"><i class="bi bi-water"></i></span> SGHR
+        </a>
+        <p class="small">Plataforma de gestão e divulgação de hotéis e resorts, ligando turistas, visitantes e estabelecimentos hoteleiros.</p>
+      </div>
+      <div class="col-6 col-lg-2">
+        <h6>Plataforma</h6>
+        <ul class="list-unstyled d-grid gap-2">
+          <li><a th:href="@{/}" href="#">Início</a></li>
+          <li><a th:href="@{/hoteis}" href="#">Hotéis &amp; Resorts</a></li>
+          <li><a th:href="@{/registro}" href="registro.html">Criar conta</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-lg-2">
+        <h6>Conta</h6>
+        <ul class="list-unstyled d-grid gap-2">
+          <li><a th:href="@{/login}" href="login.html">Entrar</a></li>
+          <li><a th:href="@{/auth/recuperar-senha}" href="auth/recuperar-senha.html">Recuperar senha</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-4">
+        <h6>Contacto</h6>
+        <p class="small mb-1"><i class="bi bi-envelope me-2"></i>suporte@sghr.co.mz</p>
+        <p class="small mb-0"><i class="bi bi-telephone me-2"></i>+258 84 000 0000</p>
+      </div>
+    </div>
+    <div class="footer-bottom d-flex flex-wrap justify-content-between gap-2">
+      <span>&copy; <span id="anoAtual">2026</span> SGHR — Sistema de Gestão de Hotelaria e Resorts.</span>
+      <span>Feito para turistas e hotéis de Moçambique.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Bootstrap Bundle (CDN) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script th:inline="javascript">
+  document.getElementById('anoAtual').textContent = new Date().getFullYear();
+
+  const btnLocalizacao = document.getElementById('btnLocalizacao');
+  if (btnLocalizacao) {
+    btnLocalizacao.addEventListener('click', function () {
+      if (!navigator.geolocation) return;
+      btnLocalizacao.disabled = true;
+      btnLocalizacao.innerHTML = '<i class="bi bi-arrow-repeat"></i> A obter localização…';
+      navigator.geolocation.getCurrentPosition(
+        function (pos) {
+          btnLocalizacao.innerHTML = '<i class="bi bi-check2"></i> Localização obtida';
+          // TODO: enviar pos.coords.latitude / pos.coords.longitude ao backend (RF12/RF13)
+        },
+        function () {
+          btnLocalizacao.disabled = false;
+          btnLocalizacao.innerHTML = '<i class="bi bi-crosshair"></i> Usar a minha localização atual';
+        }
+      );
+    });
+  }
+</script>
+</body>
+</html>

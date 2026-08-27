@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-MZ" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criar conta — SGHR</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/style.css}" href="../static/css/style.css">
+</head>
+<body class="bg-sand">
+
+<div class="auth-shell">
+
+  <div class="col-lg-5 auth-visual d-none d-lg-flex">
+    <a class="navbar-brand text-white" th:href="@{/}" href="home.html">
+      <span class="brand-mark"><i class="bi bi-water"></i></span> SGHR
+    </a>
+    <blockquote>
+      &ldquo;Crie a sua conta uma vez e reserve em qualquer hotel ou resort parceiro, em qualquer ponto do país.&rdquo;
+    </blockquote>
+    <div class="small" style="color: rgba(255,255,255,.6);">Registo gratuito para turistas e visitantes</div>
+  </div>
+
+  <div class="col-lg-7 auth-form-side">
+    <div class="auth-card auth-card-wide">
+
+      <a class="d-inline-flex align-items-center gap-2 mb-4 d-lg-none navbar-brand" th:href="@{/}" href="home.html">
+        <span class="brand-mark"><i class="bi bi-water"></i></span> SGHR
+      </a>
+
+      <p class="eyebrow">Leva menos de 2 minutos</p>
+      <h1 class="font-display h2 mb-2">Criar a sua conta</h1>
+      <p class="text-muted mb-4">Depois de registar, enviaremos um email de confirmação para ativar o seu acesso.</p>
+
+      <div class="alert alert-sghr alert-danger d-flex align-items-center gap-2" th:if="${erro}">
+        <i class="bi bi-exclamation-circle"></i> <span th:text="${erro}">Este email já está registado.</span>
+      </div>
+
+      <form th:action="@{/registro}" th:object="${usuarioForm}" action="#" method="post" novalidate>
+        <input type="hidden" th:if="${_csrf}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="nome" class="form-label">Nome completo <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="nome" th:field="*{nome}" name="nome" placeholder="Ex.: Ana Cossa" required>
+          </div>
+
+          <div class="col-md-6">
+            <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+            <input type="email" class="form-control" id="email" th:field="*{email}" name="email" placeholder="nome@exemplo.com" required>
+            <div class="form-text">Deve ser único — será usado para iniciar sessão.</div>
+          </div>
+
+          <div class="col-md-6">
+            <label for="telefone" class="form-label">Telefone <span class="text-danger">*</span></label>
+            <input type="tel" class="form-control" id="telefone" th:field="*{telefone}" name="telefone" placeholder="+258 84 000 0000" required>
+          </div>
+
+          <div class="col-md-6">
+            <label for="dataNascimento" class="form-label">Data de nascimento <span class="text-muted fw-normal">(opcional)</span></label>
+            <input type="date" class="form-control" id="dataNascimento" th:field="*{dataNascimento}" name="dataNascimento">
+          </div>
+
+          <div class="col-md-6">
+            <label for="nacionalidade" class="form-label">Nacionalidade / país de origem <span class="text-muted fw-normal">(opcional)</span></label>
+            <select class="form-select" id="nacionalidade" th:field="*{nacionalidade}" name="nacionalidade">
+              <option value="" selected>Selecionar…</option>
+              <option value="MZ">Moçambicana</option>
+              <option value="ZA">Sul-africana</option>
+              <option value="PT">Portuguesa</option>
+              <option value="BR">Brasileira</option>
+              <option value="OUTRA">Outra</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label for="foto" class="form-label">Fotografia de perfil <span class="text-muted fw-normal">(opcional)</span></label>
+            <input type="file" class="form-control" id="foto" name="foto" accept="image/*">
+          </div>
+
+          <div class="col-md-6">
+            <label for="senha" class="form-label">Palavra-passe <span class="text-danger">*</span></label>
+            <input type="password" class="form-control" id="senha" th:field="*{senha}" name="senha" placeholder="Mínimo 8 caracteres" required minlength="8">
+            <div class="password-strength"><span></span></div>
+            <div class="form-text">Use letras e números — evite dados óbvios como o seu nome.</div>
+          </div>
+
+          <div class="col-md-6">
+            <label for="confirmarSenha" class="form-label">Confirmar palavra-passe <span class="text-danger">*</span></label>
+            <input type="password" class="form-control" id="confirmarSenha" name="confirmarSenha" placeholder="Repita a palavra-passe" required minlength="8">
+          </div>
+        </div>
+
+        <div class="form-check my-4">
+          <input class="form-check-input" type="checkbox" id="termos" name="aceitaTermos" required>
+          <label class="form-check-label small" for="termos">
+            Li e aceito os <a th:href="@{/termos}" href="#">Termos de Utilização</a> e a <a th:href="@{/privacidade}" href="#">Política de Privacidade</a>.
+          </label>
+        </div>
+
+        <button type="submit" class="btn btn-ocean w-100 mb-3">
+          <i class="bi bi-person-check me-1"></i> Criar conta
+        </button>
+
+        <div class="text-center small">
+          Já tem conta? <a th:href="@{/login}" href="login.html">Iniciar sessão</a>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const senha = document.getElementById('senha');
+  const bar = document.querySelector('.password-strength span');
+  if (senha && bar) {
+    senha.addEventListener('input', function () {
+      const len = senha.value.length;
+      let pct = 15, color = 'var(--sghr-danger)';
+      if (len >= 12) { pct = 100; color = 'var(--sghr-success)'; }
+      else if (len >= 8) { pct = 65; color = 'var(--sghr-gold-500)'; }
+      else if (len > 0) { pct = 30; color = 'var(--sghr-danger)'; }
+      bar.style.width = pct + '%';
+      bar.style.background = color;
+    });
+  }
+
+  const form = document.querySelector('form[novalidate]');
+  const confirmar = document.getElementById('confirmarSenha');
+  if (form) {
+    form.addEventListener('submit', function (e) {
+      if (senha.value !== confirmar.value) {
+        e.preventDefault();
+        confirmar.setCustomValidity('As palavras-passe não coincidem.');
+        confirmar.reportValidity();
+      } else {
+        confirmar.setCustomValidity('');
+      }
+    });
+  }
+</script>
+</body>
+</html>

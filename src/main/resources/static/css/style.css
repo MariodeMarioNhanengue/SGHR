@@ -1,0 +1,942 @@
+/* =========================================================================
+   SGHR — Sistema de Gestão de Hotelaria e Resorts
+   Folha de estilos principal
+   -------------------------------------------------------------------------
+   Índice:
+     1. Tokens (cores, tipografia, espaçamento, sombras)
+     2. Reset/Base
+     3. Utilitários
+     4. Navbar pública
+     5. Botões
+     6. Hero + divisor de onda (página inicial)
+     7. Cartões de hotel / secções públicas
+     8. Autenticação (login, registo, recuperação, etc.)
+     9. Rodapé
+     10. Layout administrativo (sidebar + topbar)
+     11. Cartões de estatística (dashboard)
+     12. Tabelas administrativas + badges de estado
+     13. Responsividade
+   ========================================================================= */
+
+/* -------------------------------------------------------------------------
+   1. TOKENS
+   ------------------------------------------------------------------------- */
+:root {
+  /* Paleta — "Costa do Índico": teal profundo + dourado capulana */
+  --sghr-ocean-950: #07211f;
+  --sghr-ocean-900: #0b2f2c;
+  --sghr-ocean-800: #0f4a45;
+  --sghr-ocean-700: #145a53;
+  --sghr-ocean-600: #1c6e64;
+  --sghr-ocean-500: #278579;
+  --sghr-ocean-100: #e6f1ee;
+
+  --sghr-gold-600: #b8862c;
+  --sghr-gold-500: #d8a13a;
+  --sghr-gold-400: #e2b458;
+  --sghr-gold-300: #eac77a;
+  --sghr-gold-100: #f8ecd4;
+
+  --sghr-sand-50: #fbf6ec;
+  --sghr-sand-100: #f4ecdb;
+
+  --sghr-ink-900: #16231f;
+  --sghr-ink-700: #33443e;
+  --sghr-ink-500: #5c6d67;
+  --sghr-ink-300: #93a29c;
+
+  --sghr-white: #ffffff;
+  --sghr-danger: #b3402f;
+  --sghr-danger-bg: #fbe9e6;
+  --sghr-success: #2e7d5b;
+  --sghr-success-bg: #e6f3ec;
+  --sghr-warning: #a9721c;
+  --sghr-warning-bg: #fbf0dc;
+
+  --sghr-font-display: "Fraunces", "Georgia", serif;
+  --sghr-font-body: "Manrope", "Segoe UI", sans-serif;
+
+  --sghr-radius-sm: 8px;
+  --sghr-radius-md: 14px;
+  --sghr-radius-lg: 22px;
+  --sghr-radius-pill: 999px;
+
+  --sghr-shadow-sm: 0 2px 8px rgba(7, 33, 31, 0.08);
+  --sghr-shadow-md: 0 12px 32px rgba(7, 33, 31, 0.12);
+  --sghr-shadow-lg: 0 24px 60px rgba(7, 33, 31, 0.18);
+}
+
+/* -------------------------------------------------------------------------
+   2. RESET / BASE
+   ------------------------------------------------------------------------- */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--sghr-font-body);
+  color: var(--sghr-ink-900);
+  background-color: var(--sghr-sand-50);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4,
+.font-display {
+  font-family: var(--sghr-font-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--sghr-ocean-950);
+}
+
+a {
+  color: var(--sghr-ocean-700);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--sghr-ocean-600);
+}
+
+::selection {
+  background: var(--sghr-gold-300);
+  color: var(--sghr-ocean-950);
+}
+
+:focus-visible {
+  outline: 3px solid var(--sghr-gold-500);
+  outline-offset: 2px;
+}
+
+.form-control,
+.form-select {
+  border-radius: var(--sghr-radius-sm);
+  border-color: #dfe6e2;
+  padding: 0.65rem 0.9rem;
+  font-size: 0.95rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--sghr-ocean-600);
+  box-shadow: 0 0 0 0.2rem rgba(28, 110, 100, 0.15);
+}
+
+.form-label {
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--sghr-ink-700);
+  margin-bottom: 0.4rem;
+}
+
+.form-text {
+  font-size: 0.8rem;
+}
+
+/* -------------------------------------------------------------------------
+   3. UTILITÁRIOS
+   ------------------------------------------------------------------------- */
+.text-ocean {
+  color: var(--sghr-ocean-700) !important;
+}
+
+.text-gold {
+  color: var(--sghr-gold-600) !important;
+}
+
+.bg-ocean-950 { background-color: var(--sghr-ocean-950) !important; }
+.bg-ocean-100 { background-color: var(--sghr-ocean-100) !important; }
+.bg-sand { background-color: var(--sghr-sand-50) !important; }
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sghr-gold-600);
+}
+
+.eyebrow::before {
+  content: "";
+  width: 22px;
+  height: 2px;
+  background: var(--sghr-gold-500);
+  display: inline-block;
+}
+
+.section-pad {
+  padding-top: clamp(3rem, 6vw, 5.5rem);
+  padding-bottom: clamp(3rem, 6vw, 5.5rem);
+}
+
+/* -------------------------------------------------------------------------
+   4. NAVBAR PÚBLICA
+   ------------------------------------------------------------------------- */
+.navbar-sghr {
+  padding: 1rem 0;
+  background: rgba(251, 246, 236, 0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(15, 74, 69, 0.08);
+}
+
+.navbar-sghr .navbar-brand {
+  font-family: var(--sghr-font-display);
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: var(--sghr-ocean-950);
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.navbar-sghr .navbar-brand .brand-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: linear-gradient(155deg, var(--sghr-ocean-700), var(--sghr-ocean-950));
+  color: var(--sghr-gold-300);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.navbar-sghr .nav-link {
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--sghr-ink-700);
+  padding: 0.5rem 1rem !important;
+}
+
+.navbar-sghr .nav-link.active,
+.navbar-sghr .nav-link:hover {
+  color: var(--sghr-ocean-800);
+}
+
+/* -------------------------------------------------------------------------
+   5. BOTÕES
+   ------------------------------------------------------------------------- */
+.btn {
+  font-weight: 700;
+  font-size: 0.9rem;
+  border-radius: var(--sghr-radius-pill);
+  padding: 0.65rem 1.5rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.btn-gold {
+  background-color: var(--sghr-gold-500);
+  border: 1px solid var(--sghr-gold-500);
+  color: var(--sghr-ocean-950);
+}
+
+.btn-gold:hover {
+  background-color: var(--sghr-gold-400);
+  border-color: var(--sghr-gold-400);
+  color: var(--sghr-ocean-950);
+  transform: translateY(-1px);
+  box-shadow: var(--sghr-shadow-sm);
+}
+
+.btn-ocean {
+  background-color: var(--sghr-ocean-800);
+  border: 1px solid var(--sghr-ocean-800);
+  color: var(--sghr-white);
+}
+
+.btn-ocean:hover {
+  background-color: var(--sghr-ocean-950);
+  border-color: var(--sghr-ocean-950);
+  color: var(--sghr-white);
+  transform: translateY(-1px);
+}
+
+.btn-outline-ocean {
+  background-color: transparent;
+  border: 1.5px solid var(--sghr-ocean-800);
+  color: var(--sghr-ocean-800);
+}
+
+.btn-outline-ocean:hover {
+  background-color: var(--sghr-ocean-800);
+  color: var(--sghr-white);
+}
+
+.btn-link-quiet {
+  color: var(--sghr-ink-500);
+  font-weight: 600;
+  padding: 0;
+}
+
+.btn-link-quiet:hover {
+  color: var(--sghr-ocean-800);
+}
+
+/* -------------------------------------------------------------------------
+   6. HERO + DIVISOR DE ONDA
+   ------------------------------------------------------------------------- */
+.hero-sghr {
+  position: relative;
+  background: radial-gradient(120% 140% at 15% 0%, #123f3a 0%, var(--sghr-ocean-950) 62%);
+  color: var(--sghr-white);
+  padding-top: clamp(3.5rem, 8vw, 6rem);
+  padding-bottom: 6.5rem;
+  overflow: hidden;
+}
+
+.hero-sghr::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(216, 161, 58, 0.16) 1.5px, transparent 1.5px);
+  background-size: 26px 26px;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.hero-sghr h1 {
+  color: var(--sghr-white);
+  font-size: clamp(2.2rem, 4.4vw, 3.4rem);
+  line-height: 1.08;
+}
+
+.hero-sghr .lead {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 1.1rem;
+  max-width: 620px;
+}
+
+.hero-wave {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  line-height: 0;
+}
+
+.hero-wave svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Cartão de pesquisa flutuante sobre a onda */
+.search-card {
+  position: relative;
+  z-index: 2;
+  background: var(--sghr-white);
+  border-radius: var(--sghr-radius-lg);
+  box-shadow: var(--sghr-shadow-lg);
+  padding: 1.6rem;
+  margin-top: -4.75rem;
+}
+
+.search-card .form-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--sghr-ink-500);
+}
+
+/* -------------------------------------------------------------------------
+   7. CARTÕES DE HOTEL / SECÇÕES PÚBLICAS
+   ------------------------------------------------------------------------- */
+.hotel-card {
+  border: none;
+  border-radius: var(--sghr-radius-md);
+  overflow: hidden;
+  background: var(--sghr-white);
+  box-shadow: var(--sghr-shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  height: 100%;
+}
+
+.hotel-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--sghr-shadow-md);
+}
+
+.hotel-card .hotel-thumb {
+  height: 190px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.hotel-card .hotel-badge {
+  position: absolute;
+  top: 0.85rem;
+  left: 0.85rem;
+  background: rgba(7, 33, 31, 0.72);
+  color: var(--sghr-gold-300);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--sghr-radius-pill);
+  backdrop-filter: blur(4px);
+}
+
+.hotel-card .hotel-rating {
+  font-weight: 700;
+  color: var(--sghr-ocean-800);
+  font-size: 0.85rem;
+}
+
+.hotel-card .hotel-price {
+  font-family: var(--sghr-font-display);
+  font-size: 1.2rem;
+  color: var(--sghr-ocean-950);
+}
+
+.step-marker {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--sghr-ocean-950);
+  color: var(--sghr-gold-300);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--sghr-font-display);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* -------------------------------------------------------------------------
+   8. AUTENTICAÇÃO
+   ------------------------------------------------------------------------- */
+.auth-shell {
+  min-height: 100vh;
+  display: flex;
+  align-items: stretch;
+}
+
+.auth-visual {
+  background: radial-gradient(120% 120% at 20% 15%, #123f3a 0%, var(--sghr-ocean-950) 70%);
+  color: var(--sghr-white);
+  position: relative;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.auth-visual::after {
+  content: "";
+  position: absolute;
+  right: -60px;
+  bottom: -60px;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  border: 1px solid rgba(216, 161, 58, 0.35);
+}
+
+.auth-visual::before {
+  content: "";
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  border: 1px solid rgba(216, 161, 58, 0.28);
+}
+
+.auth-visual blockquote {
+  font-family: var(--sghr-font-display);
+  font-size: 1.35rem;
+  line-height: 1.4;
+  max-width: 380px;
+  position: relative;
+  z-index: 1;
+}
+
+.auth-form-side {
+  background: var(--sghr-sand-50);
+  display: flex;
+  align-items: center;
+  padding: 2.5rem 1.5rem;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.auth-card.auth-card-wide {
+  max-width: 560px;
+}
+
+.auth-icon-circle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--sghr-ocean-100);
+  color: var(--sghr-ocean-800);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.auth-icon-circle.is-success {
+  background: var(--sghr-success-bg);
+  color: var(--sghr-success);
+}
+
+.auth-icon-circle.is-danger {
+  background: var(--sghr-danger-bg);
+  color: var(--sghr-danger);
+}
+
+.divider-or {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--sghr-ink-300);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 1.25rem 0;
+}
+
+.divider-or::before,
+.divider-or::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #e4ddce;
+}
+
+.code-input-group {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.code-input-group input {
+  width: 100%;
+  text-align: center;
+  font-family: var(--sghr-font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  padding: 0.6rem 0;
+  border-radius: var(--sghr-radius-sm);
+  border: 1.5px solid #dfe6e2;
+  background: var(--sghr-white);
+}
+
+.code-input-group input:focus {
+  border-color: var(--sghr-ocean-600);
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(28, 110, 100, 0.15);
+}
+
+.password-strength {
+  height: 5px;
+  border-radius: var(--sghr-radius-pill);
+  background: #e4ddce;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.password-strength span {
+  display: block;
+  height: 100%;
+  width: 35%;
+  background: var(--sghr-gold-500);
+}
+
+.alert-sghr {
+  border: none;
+  border-radius: var(--sghr-radius-sm);
+  font-size: 0.88rem;
+  padding: 0.85rem 1rem;
+}
+
+.alert-sghr.alert-danger {
+  background: var(--sghr-danger-bg);
+  color: var(--sghr-danger);
+}
+
+.alert-sghr.alert-success {
+  background: var(--sghr-success-bg);
+  color: var(--sghr-success);
+}
+
+/* -------------------------------------------------------------------------
+   9. RODAPÉ
+   ------------------------------------------------------------------------- */
+.footer-sghr {
+  background: var(--sghr-ocean-950);
+  color: rgba(255, 255, 255, 0.68);
+  padding: 3rem 0 1.5rem;
+}
+
+.footer-sghr h6 {
+  color: var(--sghr-gold-300);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.footer-sghr a {
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.9rem;
+}
+
+.footer-sghr a:hover {
+  color: var(--sghr-gold-300);
+}
+
+.footer-sghr .footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  font-size: 0.8rem;
+}
+
+/* -------------------------------------------------------------------------
+   10. LAYOUT ADMINISTRATIVO
+   ------------------------------------------------------------------------- */
+.admin-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.admin-sidebar {
+  width: 264px;
+  flex-shrink: 0;
+  background: var(--sghr-ocean-950);
+  color: rgba(255, 255, 255, 0.82);
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1.1rem;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.admin-sidebar .sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--sghr-font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--sghr-white);
+  padding: 0.4rem 0.6rem 1.5rem;
+}
+
+.admin-sidebar .sidebar-brand .brand-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(216, 161, 58, 0.16);
+  color: var(--sghr-gold-300);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-sidebar .sidebar-eyebrow {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.4);
+  padding: 0 0.6rem;
+  margin: 1.1rem 0 0.5rem;
+}
+
+.admin-sidebar .nav-link {
+  color: rgba(255, 255, 255, 0.72);
+  font-weight: 600;
+  font-size: 0.92rem;
+  border-radius: var(--sghr-radius-sm);
+  padding: 0.65rem 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 0.15rem;
+}
+
+.admin-sidebar .nav-link i {
+  font-size: 1.05rem;
+  width: 20px;
+  text-align: center;
+}
+
+.admin-sidebar .nav-link:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--sghr-white);
+}
+
+.admin-sidebar .nav-link.active {
+  background: var(--sghr-gold-500);
+  color: var(--sghr-ocean-950);
+}
+
+.admin-sidebar .sidebar-footer {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.admin-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-topbar {
+  background: var(--sghr-white);
+  border-bottom: 1px solid #ece4d2;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.admin-topbar h1 {
+  font-size: 1.35rem;
+  margin: 0;
+}
+
+.admin-topbar .topbar-subtitle {
+  color: var(--sghr-ink-500);
+  font-size: 0.88rem;
+}
+
+.admin-content {
+  padding: 2rem;
+}
+
+.avatar-chip {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--sghr-ocean-100);
+  color: var(--sghr-ocean-800);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+/* -------------------------------------------------------------------------
+   11. CARTÕES DE ESTATÍSTICA
+   ------------------------------------------------------------------------- */
+.stat-card {
+  background: var(--sghr-white);
+  border-radius: var(--sghr-radius-md);
+  padding: 1.4rem 1.5rem;
+  box-shadow: var(--sghr-shadow-sm);
+  height: 100%;
+}
+
+.stat-card .stat-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  margin-bottom: 0.9rem;
+}
+
+.stat-card .stat-value {
+  font-family: var(--sghr-font-display);
+  font-size: 1.9rem;
+  color: var(--sghr-ocean-950);
+  line-height: 1;
+}
+
+.stat-card .stat-label {
+  color: var(--sghr-ink-500);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.stat-card .stat-trend {
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.stat-trend.up { color: var(--sghr-success); }
+.stat-trend.down { color: var(--sghr-danger); }
+
+.card-sghr {
+  background: var(--sghr-white);
+  border-radius: var(--sghr-radius-md);
+  box-shadow: var(--sghr-shadow-sm);
+  border: 1px solid #f0e9d9;
+}
+
+.card-sghr .card-header-sghr {
+  padding: 1.1rem 1.4rem;
+  border-bottom: 1px solid #f0e9d9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-sghr .card-header-sghr h2 {
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+/* -------------------------------------------------------------------------
+   12. TABELAS ADMINISTRATIVAS + BADGES
+   ------------------------------------------------------------------------- */
+.table-sghr {
+  margin-bottom: 0;
+}
+
+.table-sghr thead th {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--sghr-ink-500);
+  border-bottom: 1px solid #f0e9d9;
+  font-weight: 700;
+  padding: 0.9rem 1rem;
+  white-space: nowrap;
+}
+
+.table-sghr tbody td {
+  padding: 0.9rem 1rem;
+  vertical-align: middle;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #f5f0e4;
+  color: var(--sghr-ink-700);
+}
+
+.table-sghr tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table-sghr tbody tr:hover {
+  background: var(--sghr-ocean-100);
+}
+
+.badge-status {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.35rem 0.7rem;
+  border-radius: var(--sghr-radius-pill);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.badge-status.status-ativo {
+  background: var(--sghr-success-bg);
+  color: var(--sghr-success);
+}
+
+.badge-status.status-pendente {
+  background: var(--sghr-warning-bg);
+  color: var(--sghr-warning);
+}
+
+.badge-status.status-bloqueado,
+.badge-status.status-suspenso {
+  background: var(--sghr-danger-bg);
+  color: var(--sghr-danger);
+}
+
+.badge-status.status-inativo {
+  background: #ececec;
+  color: var(--sghr-ink-500);
+}
+
+.badge-role {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--sghr-radius-sm);
+  background: var(--sghr-ocean-100);
+  color: var(--sghr-ocean-800);
+}
+
+.filter-bar {
+  background: var(--sghr-white);
+  border-radius: var(--sghr-radius-md);
+  box-shadow: var(--sghr-shadow-sm);
+  padding: 1rem 1.25rem;
+}
+
+.search-input-icon {
+  position: relative;
+}
+
+.search-input-icon i {
+  position: absolute;
+  left: 0.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--sghr-ink-300);
+}
+
+.search-input-icon input {
+  padding-left: 2.3rem;
+}
+
+/* -------------------------------------------------------------------------
+   13. RESPONSIVIDADE
+   ------------------------------------------------------------------------- */
+@media (max-width: 991.98px) {
+  .auth-visual {
+    display: none;
+  }
+
+  .admin-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1030;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    box-shadow: var(--sghr-shadow-lg);
+  }
+
+  .admin-sidebar.is-open {
+    transform: translateX(0);
+  }
+
+  .admin-content {
+    padding: 1.25rem;
+  }
+
+  .admin-topbar {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .search-card {
+    margin-top: -3rem;
+    padding: 1.1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .hotel-card,
+  .btn {
+    transition: none;
+  }
+}
